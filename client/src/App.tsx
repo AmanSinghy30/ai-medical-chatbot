@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Doctor, Medicine } from './types';
 import { useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
-import { AuthModal } from './components/AuthModal';
+import { AuthPage } from './components/AuthPage';
 import { EmergencyBanner } from './components/EmergencyBanner';
 import { Hero } from './components/Hero';
 import { Features } from './components/Features';
@@ -60,6 +60,15 @@ export default function App() {
     setSelectedMedicine(med);
     go('medicines');
   };
+
+  if (authOpen) {
+    return (
+      <AuthPage 
+        onSuccess={() => { setAuthOpen(false); go('dashboard'); }} 
+        onBack={() => setAuthOpen(false)} 
+      />
+    );
+  }
 
   return (
     <div className="flex min-h-screen flex-col bg-base text-ink antialiased selection:bg-brand-400 selection:text-slate-950">
@@ -260,12 +269,6 @@ export default function App() {
         initialQuery={chatQuery}
         onSelectDoctor={pickDoctor}
         onSelectMedicine={pickMedicine}
-      />
-
-      <AuthModal
-        isOpen={authOpen}
-        onClose={() => setAuthOpen(false)}
-        onSuccess={() => go('dashboard')}
       />
 
       <Footer />
