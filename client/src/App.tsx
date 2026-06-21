@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Doctor, Medicine } from './types';
 import { useAuth } from './context/AuthContext';
 import { Navbar } from './components/Navbar';
+import { Sidebar } from './components/Sidebar';
 import { AuthPage } from './components/AuthPage';
 import { EmergencyBanner } from './components/EmergencyBanner';
 import { Hero } from './components/Hero';
@@ -67,6 +68,64 @@ export default function App() {
         onSuccess={() => { setAuthOpen(false); go('dashboard'); }} 
         onBack={() => setAuthOpen(false)} 
       />
+    );
+  }
+
+  if (activeTab !== 'landing') {
+    return (
+      <div className="flex min-h-screen bg-slate-50/30 text-ink antialiased selection:bg-brand-200 selection:text-brand-900">
+        <Sidebar
+          activeTab={activeTab}
+          onChangeTab={go}
+          currentUser={currentUser}
+          onLogout={logout}
+          onOpenChat={() => setChatOpen((v) => !v)}
+          chatOpen={chatOpen}
+        >
+          {activeTab === 'dashboard' && (
+            <DashboardView
+              currentUser={currentUser}
+              onOpenAuth={() => setAuthOpen(true)}
+              onChangeTab={go}
+              onOpenChat={() => setChatOpen(true)}
+            />
+          )}
+          {activeTab === 'symptom_checker' && (
+            <SymptomCheckerTab onSelectDoctor={pickDoctor} onSelectMedicine={pickMedicine} onOpenChatWithQuery={queryChat} />
+          )}
+          {activeTab === 'doctors' && (
+            <DoctorDirectoryTab
+              onSelectDoctor={pickDoctor}
+              selectedDoctor={selectedDoctor}
+              onClearSelectedDoctor={() => setSelectedDoctor(null)}
+            />
+          )}
+          {activeTab === 'medicines' && (
+            <MedicineDirectoryTab
+              onSelectMedicine={(med) => {
+                setSelectedMedicine(med);
+                alert(`Interaction details for ${med.name} accessible.`);
+              }}
+            />
+          )}
+          {activeTab === 'tips' && <HealthTipsTab />}
+          {activeTab === 'appointments' && (
+            <AppointmentBookingTab
+              preSelectedDoctor={selectedDoctor}
+              onBack={() => { setSelectedDoctor(null); go('doctors'); }}
+            />
+          )}
+          {activeTab === 'reports' && <MedicalReportsTab />}
+        </Sidebar>
+
+        <ChatbotWidget
+          isOpen={chatOpen}
+          onOpenToggle={(open?: boolean) => setChatOpen(open !== undefined ? open : !chatOpen)}
+          initialQuery={chatQuery}
+          onSelectDoctor={pickDoctor}
+          onSelectMedicine={pickMedicine}
+        />
+      </div>
     );
   }
 
@@ -226,41 +285,6 @@ export default function App() {
             </SectionShell>
           </div>
         )}
-
-        {activeTab === 'dashboard' && (
-          <DashboardView
-            currentUser={currentUser}
-            onOpenAuth={() => setAuthOpen(true)}
-            onChangeTab={go}
-            onOpenChat={() => setChatOpen(true)}
-          />
-        )}
-        {activeTab === 'symptom_checker' && (
-          <SymptomCheckerTab onSelectDoctor={pickDoctor} onSelectMedicine={pickMedicine} onOpenChatWithQuery={queryChat} />
-        )}
-        {activeTab === 'doctors' && (
-          <DoctorDirectoryTab
-            onSelectDoctor={pickDoctor}
-            selectedDoctor={selectedDoctor}
-            onClearSelectedDoctor={() => setSelectedDoctor(null)}
-          />
-        )}
-        {activeTab === 'medicines' && (
-          <MedicineDirectoryTab
-            onSelectMedicine={(med) => {
-              setSelectedMedicine(med);
-              alert(`Interaction details for ${med.name} accessible.`);
-            }}
-          />
-        )}
-        {activeTab === 'tips' && <HealthTipsTab />}
-        {activeTab === 'appointments' && (
-          <AppointmentBookingTab
-            preSelectedDoctor={selectedDoctor}
-            onBack={() => { setSelectedDoctor(null); go('doctors'); }}
-          />
-        )}
-        {activeTab === 'reports' && <MedicalReportsTab />}
       </main>
 
       <ChatbotWidget
