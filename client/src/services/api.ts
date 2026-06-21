@@ -57,6 +57,7 @@ export const deleteReport = (id: string) => api.delete(`/reports/${id}`);
 export const getDoctors = (params?: any) => api.get('/doctors', { params });
 export const getDoctorById = (id: string) => api.get(`/doctors/${id}`);
 export const getSpecialties = () => api.get('/doctors/specialties');
+export const getMyDoctorProfile = () => api.get('/doctors/me');
 
 // Medicines
 export const getMedicines = (params?: any) => api.get('/medicines', { params });
