@@ -8,6 +8,7 @@ export interface User {
   gender?: string;
   allergies?: string[];
   chronicConditions?: string[];
+  appointmentEmail?: string;
 }
 
 export interface Doctor {
@@ -64,6 +65,7 @@ export interface ChatMessage {
     category: string;
   }>;
   isDisclaimer?: boolean;
+  medicalDisclaimer?: string;
   questionId?: string;
   assessment?: {
     severity: string;
@@ -93,4 +95,5 @@ export interface ChatSession {
   date: string;
   messagesCount: number;
   summary: string;
+  timestamp?: number;
 }

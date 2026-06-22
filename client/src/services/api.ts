@@ -10,7 +10,7 @@ const api: AxiosInstance = axios.create({
 });
 
 api.interceptors.request.use((config) => {
-  const token = localStorage.getItem('medisage_token');
+  const token = sessionStorage.getItem('medisage_token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
@@ -57,12 +57,14 @@ export const deleteReport = (id: string) => api.delete(`/reports/${id}`);
 export const getDoctors = (params?: any) => api.get('/doctors', { params });
 export const getDoctorById = (id: string) => api.get(`/doctors/${id}`);
 export const getSpecialties = () => api.get('/doctors/specialties');
-export const getMyDoctorProfile = () => api.get('/doctors/me');
+export const getMyDoctorProfile = () => api.get('/doctors/profile');
 export const updateDoctorProfile = (data: any) => api.put('/doctors/profile', data);
 
 // Medicines
 export const getMedicines = (params?: any) => api.get('/medicines', { params });
+export const recommendMedicines = (data: any) => api.post('/medicines/recommend', data);
 export const getMedicineById = (id: string) => api.get(`/medicines/${id}`);
+export const createMedicine = (data: any) => api.post('/medicines', data);
 
 // Health Tips
 export const getHealthTips = (params?: any) => api.get('/health-tips', { params });

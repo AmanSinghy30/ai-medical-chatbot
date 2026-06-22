@@ -16,7 +16,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(localStorage.getItem('medisage_token'));
+  const [token, setToken] = useState<string | null>(sessionStorage.getItem('medisage_token'));
   const [loading, setLoading] = useState(true);
 
   const transformUser = (data: any): User => ({
@@ -29,6 +29,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     allergies: data.allergies || [],
     chronicConditions: data.chronicConditions || [],
     avatar: data.avatar,
+    appointmentEmail: data.appointmentEmail,
   });
 
   const refreshUser = useCallback(async () => {
@@ -43,7 +44,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   useEffect(() => {
     const init = async () => {
-      const savedToken = localStorage.getItem('medisage_token');
+      const savedToken = sessionStorage.getItem('medisage_token');
       if (savedToken) {
         setToken(savedToken);
         try {
@@ -59,20 +60,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const login = async (email: string, password: string) => {
     const { data } = await loginUser({ email, password });
-    localStorage.setItem('medisage_token', data.token);
+    sessionStorage.setItem('medisage_token', data.token);
     setToken(data.token);
     setUser(transformUser(data));
   };
 
   const register = async (userData: any) => {
     const { data } = await registerUser(userData);
-    localStorage.setItem('medisage_token', data.token);
+    sessionStorage.setItem('medisage_token', data.token);
     setToken(data.token);
     setUser(transformUser(data));
   };
 
   const logout = () => {
-    localStorage.removeItem('medisage_token');
+    sessionStorage.removeItem('medisage_token');
     setToken(null);
     setUser(null);
   };
