@@ -19,14 +19,14 @@ export function SectionShell({
 
 export function Eyebrow({ children, tone = 'brand' }: { children: React.ReactNode; tone?: 'brand' | 'violet' | 'blue' }) {
   const tones = {
-    brand: 'text-brand-300 bg-brand-500/10 border-brand-500/20',
-    violet: 'text-violet-400 bg-violet-400/10 border-violet-400/20',
-    blue: 'text-accent-400 bg-accent-500/10 border-accent-500/20',
+    brand: 'text-brand-700 bg-brand-50 border-brand-200',
+    violet: 'text-violet-700 bg-violet-50 border-violet-200',
+    blue: 'text-blue-700 bg-blue-50 border-blue-200',
   };
   return (
     <span
       className={cn(
-        'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-[0.14em]',
+        'inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold uppercase tracking-wider',
         tones[tone]
       )}
     >
@@ -49,8 +49,8 @@ export function SectionHeading({
   return (
     <div className={cn('max-w-3xl space-y-4', align === 'center' ? 'mx-auto text-center' : 'text-left')}>
       {eyebrow}
-      <h2 className="text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-4xl">{title}</h2>
-      {desc && <p className="text-md leading-relaxed text-ink-soft sm:text-lg">{desc}</p>}
+      <h2 className="text-3xl font-bold leading-tight tracking-tight text-slate-900 sm:text-4xl">{title}</h2>
+      {desc && <p className="text-md leading-relaxed text-slate-600 sm:text-lg">{desc}</p>}
     </div>
   );
 }
@@ -71,21 +71,21 @@ export function Button({
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   const variants: Record<BtnVariant, string> = {
     primary:
-      'bg-gradient-to-r from-brand-400 to-accent-500 text-slate-950 font-semibold shadow-lg shadow-brand-500/20 hover:brightness-110',
+      'bg-brand-600 text-white font-medium shadow-sm hover:bg-brand-700 border border-transparent',
     secondary:
-      'border border-line-strong bg-white/[0.04] text-ink hover:bg-white/[0.08] hover:border-brand-400/40',
-    ghost: 'text-ink-soft hover:text-ink hover:bg-white/[0.05]',
-    danger: 'bg-danger text-white hover:brightness-110 shadow-lg shadow-danger/20',
+      'bg-white border border-slate-200 text-slate-700 font-medium hover:bg-slate-50 shadow-sm',
+    ghost: 'text-slate-600 font-medium hover:text-slate-900 hover:bg-slate-100 border border-transparent',
+    danger: 'bg-rose-600 text-white font-medium hover:bg-rose-700 shadow-sm border border-transparent',
   };
   const sizes: Record<BtnSize, string> = {
-    sm: 'px-3.5 py-2 text-xs rounded-md',
-    md: 'px-5 py-2.5 text-sm rounded-lg',
-    lg: 'px-6 py-3.5 text-md rounded-xl',
+    sm: 'px-3.5 py-2 text-sm rounded-md',
+    md: 'px-4 py-2.5 text-sm rounded-lg',
+    lg: 'px-6 py-3 text-base rounded-xl',
   };
   return (
     <button
       className={cn(
-        'inline-flex items-center justify-center gap-2 font-semibold transition-all duration-fast active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50',
+        'inline-flex items-center justify-center gap-2 transition-all duration-fast active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50',
         variants[variant],
         sizes[size],
         className
@@ -109,8 +109,8 @@ export function Card({
   return (
     <div
       className={cn(
-        'surface-shadow rounded-xl border border-line bg-raised/60 backdrop-blur-sm',
-        interactive && 'transition-all duration-fast hover:border-brand-400/40 hover:bg-raised',
+        'rounded-xl border border-slate-200 bg-white shadow-sm',
+        interactive && 'transition-all duration-fast hover:border-slate-300 hover:shadow-md cursor-pointer',
         className
       )}
     >
@@ -127,16 +127,16 @@ export function Badge({
   tone?: 'neutral' | 'brand' | 'ok' | 'warn' | 'danger' | 'blue' | 'violet';
 }) {
   const tones = {
-    neutral: 'bg-white/[0.06] text-ink-soft border-line',
-    brand: 'bg-brand-500/12 text-brand-300 border-brand-500/25',
-    ok: 'bg-emerald-500/12 text-emerald-300 border-emerald-500/25',
-    warn: 'bg-amber-500/12 text-amber-300 border-amber-500/25',
-    danger: 'bg-rose-500/12 text-rose-300 border-rose-500/25',
-    blue: 'bg-accent-500/12 text-accent-400 border-accent-500/25',
-    violet: 'bg-violet-400/12 text-violet-300 border-violet-400/25',
+    neutral: 'bg-slate-100 text-slate-700 border-slate-200',
+    brand: 'bg-brand-50 text-brand-700 border-brand-200',
+    ok: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+    warn: 'bg-amber-50 text-amber-700 border-amber-200',
+    danger: 'bg-rose-50 text-rose-700 border-rose-200',
+    blue: 'bg-blue-50 text-blue-700 border-blue-200',
+    violet: 'bg-violet-50 text-violet-700 border-violet-200',
   };
   return (
-    <span className={cn('inline-flex items-center gap-1 rounded-full border px-2.5 py-0.5 text-xs font-semibold', tones[tone])}>
+    <span className={cn('inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-xs font-medium', tones[tone])}>
       {children}
     </span>
   );
@@ -150,41 +150,41 @@ export function IconChip({
   tone?: 'brand' | 'blue' | 'violet' | 'amber' | 'rose' | 'emerald';
 }) {
   const tones = {
-    brand: 'text-brand-300 bg-brand-500/10 border-brand-500/20',
-    blue: 'text-accent-400 bg-accent-500/10 border-accent-500/20',
-    violet: 'text-violet-300 bg-violet-400/10 border-violet-400/20',
-    amber: 'text-amber-300 bg-amber-500/10 border-amber-500/20',
-    rose: 'text-rose-300 bg-rose-500/10 border-rose-500/20',
-    emerald: 'text-emerald-300 bg-emerald-500/10 border-emerald-500/20',
+    brand: 'text-brand-600 bg-brand-50 border-brand-100',
+    blue: 'text-blue-600 bg-blue-50 border-blue-100',
+    violet: 'text-violet-600 bg-violet-50 border-violet-100',
+    amber: 'text-amber-600 bg-amber-50 border-amber-100',
+    rose: 'text-rose-600 bg-rose-50 border-rose-100',
+    emerald: 'text-emerald-600 bg-emerald-50 border-emerald-100',
   };
   return (
-    <div className={cn('inline-flex h-11 w-11 items-center justify-center rounded-xl border', tones[tone])}>
+    <div className={cn('inline-flex h-10 w-10 items-center justify-center rounded-lg border', tones[tone])}>
       {children}
     </div>
   );
 }
 
 export function Logo({ size = 'md', showSubmark = true }: { size?: 'sm' | 'md'; showSubmark?: boolean }) {
-  const dim = size === 'sm' ? 'h-7 w-7' : 'h-9 w-9';
-  const icon = size === 'sm' ? 'h-3.5 w-3.5' : 'h-5 w-5';
+  const dim = size === 'sm' ? 'h-6 w-6 rounded-md' : 'h-8 w-8 rounded-lg';
+  const icon = size === 'sm' ? 'h-3.5 w-3.5' : 'h-4 w-4';
   return (
-    <div className="flex items-center gap-2.5">
+    <div className="flex items-center gap-2">
       <span
         className={cn(
-          'grid place-items-center rounded-lg bg-gradient-to-br from-brand-400 to-accent-500 text-slate-950 shadow-[0_0_24px_-6px_rgba(20,184,166,0.6)]',
+          'grid place-items-center bg-brand-600 text-white shadow-sm',
           dim
         )}
       >
         <svg viewBox="0 0 24 24" fill="none" className={icon}>
-          <path d="M12 4v16M4 12h16" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" />
+          <path d="M12 4v16M4 12h16" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
         </svg>
       </span>
-      <span className={cn('font-semibold tracking-tight text-ink', size === 'sm' ? 'text-md' : 'text-lg')}>
-        Medi<span className="text-brand-300">sage</span>
+      <span className={cn('font-bold tracking-tight text-slate-900', size === 'sm' ? 'text-base' : 'text-lg')}>
+        Medisage
       </span>
       {showSubmark && (
-        <span className="hidden rounded-full border border-brand-500/20 bg-brand-500/10 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider text-brand-300 sm:inline-flex">
-          AI-MEDIC
+        <span className="hidden rounded-full border border-brand-200 bg-brand-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-brand-700 sm:inline-flex">
+          Portal
         </span>
       )}
     </div>
