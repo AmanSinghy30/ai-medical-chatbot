@@ -6,7 +6,7 @@ export const EmergencyBanner: React.FC = () => {
   if (!visible) return null;
 
   return (
-    <div className="relative z-50 bg-gradient-to-r from-rose-600 via-rose-600 to-red-600 px-4 py-2 text-white">
+    <div className="relative z-50 bg-rose-600 px-4 py-2 text-white">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-3">
         <div className="flex items-center gap-2 text-xs font-medium">
           <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full bg-white/20">
