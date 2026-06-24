@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { ShieldAlert, ArrowRight, User, Mail, Lock, UserCheck, KeyRound, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { cn } from '../utils/cn';
 import { Logo, Button } from './ui';
@@ -13,13 +14,9 @@ const GoogleIcon = () => (
   </svg>
 );
 
-interface AuthPageProps {
-  onSuccess: () => void;
-  onBack: () => void;
-}
-
-export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess, onBack }) => {
+export const AuthPage: React.FC = () => {
   const { login, register } = useAuth();
+  const navigate = useNavigate();
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -40,7 +37,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess, onBack }) => {
       } else {
         await login(email, password);
       }
-      onSuccess();
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.message || 'Incorrect E-mail, username or password');
     } finally {
@@ -52,7 +49,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess, onBack }) => {
     setLoading(true);
     try {
       await login('alex@medisage.ai', 'password123');
-      onSuccess();
+      navigate('/dashboard');
     } catch {
       setError('Demo patient not available. Please register first.');
     } finally {
@@ -64,7 +61,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess, onBack }) => {
     setLoading(true);
     try {
       await login('dr.lin@stanford.edu', 'password123');
-      onSuccess();
+      navigate('/dashboard');
     } catch {
       setError('Demo doctor not available. Please register first.');
     } finally {
@@ -80,7 +77,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess, onBack }) => {
       {/* Left Pane - Branding & Visuals */}
       <div className="hidden lg:flex w-1/2 bg-slate-50 border-r border-line flex-col relative p-8 xl:p-12">
         {/* Branding */}
-        <div className="z-10 cursor-pointer" onClick={onBack}>
+        <div className="z-10 cursor-pointer" onClick={() => navigate('/')}>
           <Logo size="md" />
         </div>
 
@@ -113,7 +110,7 @@ export const AuthPage: React.FC<AuthPageProps> = ({ onSuccess, onBack }) => {
         
         {/* Back Button */}
         <button 
-          onClick={onBack} 
+          onClick={() => navigate('/')} 
           className="absolute top-6 right-6 flex items-center gap-2 px-3 py-1.5 rounded-full hover:bg-white/[0.05] text-ink-soft transition-colors text-sm font-medium"
         >
           <ArrowLeft className="w-4 h-4" /> Back to home
