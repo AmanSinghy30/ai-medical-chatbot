@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { BookOpen, Clock, Stethoscope, X } from 'lucide-react';
 import { HealthTip } from '../types';
 import { getHealthTips, getHealthCategories } from '../services/api';
@@ -44,7 +45,7 @@ export const HealthTipsTab: React.FC = () => {
         </p>
       </div>
 
-      {tip && (
+      {tip && createPortal(
         <div className="fixed inset-0 z-[60] flex items-center justify-center bg-base/70 p-4 backdrop-blur-md animate-fadeUp">
           <div className="w-full max-w-2xl space-y-6 rounded-2xl border border-line bg-surface p-6 shadow-2xl sm:p-10">
             <div className="flex items-start justify-between border-b border-line pb-4">
@@ -63,7 +64,7 @@ export const HealthTipsTab: React.FC = () => {
             </div>
             <div className="flex flex-col items-center justify-between gap-4 rounded-xl border border-line bg-raised p-4 sm:flex-row">
               <div className="flex items-center gap-2">
-                <span className="grid h-8 w-8 place-items-center rounded-full bg-gradient-to-br from-brand-400 to-accent-500 text-[#04201d]"><Stethoscope className="h-4 w-4" /></span>
+                <span className="grid h-8 w-8 place-items-center rounded-full bg-brand-100 text-brand-700"><Stethoscope className="h-4 w-4" /></span>
                 <div>
                   <p className="text-xs leading-none text-ink-muted">Verified by</p>
                   <p className="mt-0.5 text-xs font-semibold text-ink">{tip.doctorRecommended || 'Medisage Advisory'}</p>
@@ -72,7 +73,8 @@ export const HealthTipsTab: React.FC = () => {
               <Button variant="secondary" onClick={() => setTip(null)} className="w-full sm:w-auto">Close article</Button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <div className="thin-scroll mb-10 flex items-center gap-2 overflow-x-auto pb-2">

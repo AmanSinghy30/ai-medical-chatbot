@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import {
   LayoutDashboard,
   Stethoscope,
@@ -18,8 +18,6 @@ import { getChats } from '../services/api';
 import { ChatSession } from '../types';
 
 interface SidebarProps {
-  activeTab: string;
-  onChangeTab: (tab: string) => void;
   currentUser: any;
   onLogout: () => void;
   onOpenChat: () => void;
@@ -29,8 +27,6 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({
-  activeTab,
-  onChangeTab,
   currentUser,
   onLogout,
   onOpenChat,
@@ -42,10 +38,13 @@ export const Sidebar: React.FC<SidebarProps> = ({
   const [mobileOpen, setMobileOpen] = useState(false);
   const [recentChats, setRecentChats] = useState<ChatSession[]>([]);
   const [visibleChatsCount, setVisibleChatsCount] = useState(5);
-  // Close mobile sidebar on tab change
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Close mobile sidebar on route change
   React.useEffect(() => {
     setMobileOpen(false);
-  }, [activeTab]);
+  }, [location.pathname]);
 
   React.useEffect(() => {
     const fetchRecentChats = () => {
@@ -72,24 +71,25 @@ export const Sidebar: React.FC<SidebarProps> = ({
     return () => window.removeEventListener('medisage_refresh_data', handleRefresh);
   }, [currentUser, chatOpen]);
   const navItems = [
-    { name: 'Dashboard', id: 'dashboard', icon: LayoutDashboard },
-    { name: 'Symptom Triage', id: 'symptom_checker', icon: Stethoscope },
-    { name: 'Specialists', id: 'doctors', icon: Users },
-    { name: 'Medicine', id: 'medicines', icon: Pill },
-    { name: 'Appointments', id: 'appointments', icon: Calendar },
-    { name: 'Lab Reports', id: 'reports', icon: FileText },
-    { name: 'Health Tips', id: 'tips', icon: HeartPulse },
+    { name: 'Dashboard', path: '/dashboard', icon: LayoutDashboard },
+    { name: 'Symptom Triage', path: '/symptom_checker', icon: Stethoscope },
+    { name: 'Specialists', path: '/doctors', icon: Users },
+    { name: 'Medicine', path: '/medicines', icon: Pill },
+    { name: 'Appointments', path: '/appointments', icon: Calendar },
+    { name: 'Lab Reports', path: '/reports', icon: FileText },
+    { name: 'Health Tips', path: '/tips', icon: HeartPulse },
   ];
 
   const handleLogout = () => {
     onLogout();
+    navigate('/login');
   };
 
   return (
     <div className="flex min-h-screen w-full bg-slate-50/30">
       {/* Mobile Top Bar */}
       <div className="md:hidden fixed top-0 left-0 right-0 h-16 bg-surface border-b border-line flex items-center justify-between px-4 z-30">
-         <div className="flex items-center gap-2 cursor-pointer" onClick={() => onChangeTab('dashboard')}>
+         <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
            <div className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white shadow-sm">
              <HeartPulse className="h-5 w-5" />
            </div>
@@ -116,14 +116,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
       >
         <div className="flex h-16 shrink-0 items-center justify-between px-4 border-b border-line">
           {!collapsed ? (
-            <div className="flex items-center gap-2 cursor-pointer" onClick={() => onChangeTab('dashboard')}>
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => navigate('/dashboard')}>
               <div className="grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white shadow-sm">
                 <HeartPulse className="h-5 w-5" />
               </div>
               <span className="text-lg font-bold tracking-tight text-ink">Medisage</span>
             </div>
           ) : (
-            <div className="mx-auto grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white shadow-sm cursor-pointer" onClick={() => onChangeTab('dashboard')}>
+            <div className="mx-auto grid h-8 w-8 place-items-center rounded-lg bg-brand-600 text-white shadow-sm cursor-pointer" onClick={() => navigate('/dashboard')}>
               <HeartPulse className="h-5 w-5" />
             </div>
           )}
@@ -161,15 +161,17 @@ export const Sidebar: React.FC<SidebarProps> = ({
         <div className="flex-1 overflow-y-auto thin-scroll py-6 px-3">
           <nav className="space-y-1">
             {navItems.map((item) => (
-              <button
-                key={item.id}
-                onClick={() => onChangeTab(item.id)}
-                className={cn(
-                  "w-full flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
-                  activeTab === item.id
-                    ? "bg-brand-50 text-brand-700"
-                    : "text-ink-soft hover:bg-slate-100 hover:text-ink"
-                )}
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  cn(
+                    "flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-brand-50 text-brand-700"
+                      : "text-ink-soft hover:bg-slate-100 hover:text-ink"
+                  )
+                }
                 title={collapsed ? item.name : undefined}
               >
                 <item.icon 
@@ -177,7 +179,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   strokeWidth={collapsed ? 1.5 : 2} 
                 />
                 {!collapsed && <span>{item.name}</span>}
-              </button>
+              </NavLink>
             ))}
           </nav>
           
@@ -229,7 +231,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {!currentUser ? (
             <button
-              onClick={() => onLogout()}
+              onClick={() => navigate('/login')}
               className={cn(
                 "flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium text-brand-700 transition-colors hover:bg-brand-50",
                 collapsed && "justify-center"
