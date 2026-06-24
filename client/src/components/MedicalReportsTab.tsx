@@ -77,7 +77,7 @@ export const MedicalReportsTab: React.FC = () => {
           {/* Possible Conditions */}
           {selectedReport.possibleConditions?.length > 0 && (
             <div className="space-y-3">
-              <h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-300">
+              <h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-700">
                 <Activity className="h-4 w-4" /> Possible Conditions
               </h4>
               <div className="space-y-3">
@@ -128,7 +128,7 @@ export const MedicalReportsTab: React.FC = () => {
                 {selectedReport.knowledgeSources.map((src: any, i: number) => (
                   <div key={i} className="flex items-center justify-between rounded-lg border border-line bg-white/[0.02] p-2">
                     <p className="text-xs font-semibold text-ink">{src.disease}</p>
-                    <span className="text-xs text-brand-300">{Math.round(src.confidence * 100)}%</span>
+                    <span className="text-xs text-brand-700">{Math.round(src.confidence * 100)}%</span>
                   </div>
                 ))}
               </div>
