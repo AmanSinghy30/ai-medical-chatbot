@@ -8,6 +8,7 @@ router.get('/', protect, getChats);
 router.post('/', protect, createChat);
 router.get('/:id', protect, getChatById);
 router.post('/:id/messages', protect, addMessage);
+router.delete('/temporary/:id', deleteChat);
 router.delete('/:id', protect, deleteChat);
 
 export default router;
