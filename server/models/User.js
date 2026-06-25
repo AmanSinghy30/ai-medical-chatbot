@@ -11,6 +11,9 @@ const userSchema = new mongoose.Schema({
   allergies: [{ type: String }],
   chronicConditions: [{ type: String }],
   avatar: { type: String },
+  isPregnant: { type: Boolean, default: false },
+  pregnancyDeclaredAt: { type: Date },
+  appointmentEmail: { type: String },
 }, { timestamps: true });
 
 userSchema.pre('save', async function (next) {
