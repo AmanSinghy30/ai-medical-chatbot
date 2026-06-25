@@ -24,7 +24,7 @@ export const getAppointments = async (req, res) => {
     }
     const appointments = await Appointment.find(filter)
       .populate('patient', 'name email age gender allergies chronicConditions')
-      .populate('doctor', 'name specialty hospital image')
+      .populate('doctor', 'name specialty hospital image location experience consultationFee')
       .sort({ date: 1, timeSlot: 1 });
     res.json(appointments);
   } catch (error) {

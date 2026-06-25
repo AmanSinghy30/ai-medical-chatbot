@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
+import Doctor from '../models/Doctor.js';
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET || 'medisage_dev_secret', { expiresIn: '30d' });
@@ -12,7 +13,20 @@ export const register = async (req, res) => {
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
     }
-    const user = await User.create({ name, email, password, role, age, gender, allergies, chronicConditions });
+    let finalName = name;
+    if (role === 'doctor' && !name.toLowerCase().startsWith('dr.')) {
+      finalName = `Dr. ${name}`;
+    }
+
+    const user = await User.create({ name: finalName, email, password, role, age, gender, allergies, chronicConditions });
+    
+    if (role === 'doctor') {
+      await Doctor.create({
+        userId: user._id,
+        name: user.name,
+        isProfileComplete: false
+      });
+    }
     res.status(201).json({
       _id: user._id,
       name: user.name,
@@ -22,6 +36,7 @@ export const register = async (req, res) => {
       gender: user.gender,
       allergies: user.allergies,
       chronicConditions: user.chronicConditions,
+      appointmentEmail: user.appointmentEmail,
       token: generateToken(user._id),
     });
   } catch (error) {
@@ -34,6 +49,13 @@ export const login = async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (user && (await user.comparePassword(password))) {
+      if (user.role === 'doctor') {
+        const doctorProfile = await Doctor.findOne({ name: user.name });
+        if (doctorProfile && !doctorProfile.userId) {
+          doctorProfile.userId = user._id;
+          await doctorProfile.save();
+        }
+      }
       res.json({
         _id: user._id,
         name: user.name,
@@ -43,6 +65,7 @@ export const login = async (req, res) => {
         gender: user.gender,
         allergies: user.allergies,
         chronicConditions: user.chronicConditions,
+        appointmentEmail: user.appointmentEmail,
         token: generateToken(user._id),
       });
     } else {
