@@ -97,13 +97,13 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
   const sevColor = severity === 'urgent' ? 'rose' : severity === 'high' ? 'amber' : severity === 'moderate' ? 'amber' : 'brand';
   const sevBorder = sevColor === 'rose' ? 'border-rose-500/40' : sevColor === 'amber' ? 'border-amber-500/30' : 'border-brand-500/30';
   const sevBg = sevColor === 'rose' ? 'bg-rose-500/[0.06]' : sevColor === 'amber' ? 'bg-amber-500/[0.05]' : 'bg-brand-500/[0.05]';
-  const sevBadge = sevColor === 'rose' ? 'animate-pulse border-rose-500/40 bg-rose-500/15 text-rose-300' : sevColor === 'amber' ? 'border-amber-500/30 bg-amber-500/15 text-amber-300' : 'border-brand-500/30 bg-brand-500/15 text-brand-200';
-  const urgencyColor = severity === 'urgent' ? 'border-rose-500/30 bg-rose-500/10 text-rose-200' : 'border-amber-500/30 bg-amber-500/10 text-amber-200';
+  const sevBadge = sevColor === 'rose' ? 'animate-pulse border-rose-200 bg-rose-50 text-rose-700' : sevColor === 'amber' ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-brand-200 bg-brand-50 text-brand-700';
+  const urgencyColor = severity === 'urgent' ? 'border-rose-200 bg-rose-50 text-rose-700' : 'border-amber-200 bg-amber-50 text-amber-700';
 
   return (
-    <SectionShell className="py-12 animate-fadeUp">
+    <SectionShell className="py-12 pb-32 animate-fadeUp">
       {/* Banner */}
-      <div className="mb-10 flex flex-col items-center justify-between gap-6 rounded-2xl border border-line bg-surface/70 p-8 md:flex-row">
+      <div className="mb-10 flex flex-col items-center justify-between gap-6 rounded-2xl border border-slate-200 bg-surface/70 p-8 md:flex-row">
         <div className="space-y-3 text-center md:text-left">
           <Eyebrow><Sparkles className="h-3.5 w-3.5" /> Clinical Questionnaire</Eyebrow>
           <h2 className="text-3xl font-semibold tracking-tight text-ink sm:text-4xl">Interactive Symptom Checker</h2>
@@ -118,11 +118,11 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
 
       {/* Steps */}
       <div className="mb-10 flex justify-center">
-        <div className="inline-flex flex-wrap items-center gap-1.5 rounded-2xl border border-line bg-raised/60 p-1.5">
+        <div className="inline-flex flex-wrap items-center gap-1.5 rounded-2xl border border-slate-200 bg-raised/60 p-1.5">
           {[[1, '1 · Region & Signs'], [2, '2 · Parameters'], [3, '3 · Roadmap']].map(([s, label]) => (
             <button key={s as number} onClick={() => { if ((s as number) <= step || symptoms.length) setStep(s as 1 | 2 | 3); }}
               className={cn('rounded-xl px-4 py-2 text-xs font-semibold transition-all',
-                step === s ? 'bg-gradient-to-r from-brand-400 to-accent-500 text-[#04201d]'
+                step === s ? 'bg-brand-50 hover:bg-brand-100 text-brand-700 border border-brand-200'
                   : (s as number) < step ? 'bg-white/[0.06] text-ink' : 'text-ink-muted hover:text-ink-soft')}>
               {label as string}
             </button>
@@ -132,25 +132,25 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
 
       {/* Step 1 */}
       {step === 1 && (
-        <div className="grid grid-cols-1 gap-8 rounded-2xl border border-line bg-raised/40 p-6 sm:p-8 lg:grid-cols-12">
+        <div className="grid grid-cols-1 gap-8 rounded-2xl border border-slate-200 bg-raised/40 p-6 sm:p-8 lg:grid-cols-12">
           <div className="space-y-2 lg:col-span-4">
             <h3 className="mb-3 px-1 text-xs font-semibold uppercase tracking-wider text-ink-muted">Target Region</h3>
             {regions.map((r) => (
               <button key={r} onClick={() => setRegion(r)}
                 className={cn('flex w-full items-center justify-between rounded-xl border p-4 text-left text-sm font-semibold transition-all',
-                  region === r ? 'border-brand-400/50 bg-brand-500/10 text-brand-200' : 'border-line bg-white/[0.02] text-ink-soft hover:bg-white/[0.05]')}>
-                {r} <ChevronRight className={cn('h-4 w-4', region === r ? 'text-brand-300' : 'text-ink-muted')} />
+                  region === r ? 'border-brand-500 bg-brand-50 text-brand-700 shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50')}>
+                {r} <ChevronRight className={cn('h-4 w-4', region === r ? 'text-brand-700' : 'text-ink-muted')} />
               </button>
             ))}
           </div>
 
           <div className="space-y-6 lg:col-span-8">
-            <div className="flex items-center justify-between border-b border-line pb-4">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <div>
-                <h3 className="text-lg font-semibold text-ink">Symptoms for <span className="text-brand-300">{region}</span></h3>
+                <h3 className="text-lg font-semibold text-ink">Symptoms for <span className="text-brand-700 font-bold">{region}</span></h3>
                 <p className="text-xs text-ink-muted">Check all that match your current condition</p>
               </div>
-              <span className="rounded-full border border-brand-500/25 bg-brand-500/10 px-3 py-1 text-xs font-semibold text-brand-300">{symptoms.length} selected</span>
+              <span className="rounded-full border border-brand-200 bg-brand-50 px-3 py-1 text-xs font-semibold text-brand-700">{symptoms.length} selected</span>
             </div>
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {symMap[region].map((s) => {
@@ -158,8 +158,8 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
                 return (
                   <button key={s} onClick={() => toggle(s)}
                     className={cn('flex items-center gap-3 rounded-xl border p-4 text-left transition-all',
-                      checked ? 'border-brand-400/50 bg-brand-500/15 text-ink' : 'border-line bg-white/[0.02] text-ink-soft hover:border-brand-400/30')}>
-                    <span className={cn('grid h-6 w-6 shrink-0 place-items-center rounded-lg border', checked ? 'border-brand-400 bg-brand-400 text-[#04201d]' : 'border-line')}>
+                      checked ? 'border-brand-300 bg-brand-50/50 text-slate-900' : 'border-slate-200 bg-white text-slate-600 hover:border-brand-200')}>
+                    <span className={cn('grid h-6 w-6 shrink-0 place-items-center rounded-lg border', checked ? 'border-brand-500 bg-brand-500 text-white' : 'border-slate-300')}>
                       {checked && <CheckCircle2 className="h-4 w-4" />}
                     </span>
                     <span className="text-sm font-semibold leading-tight">{s}</span>
@@ -167,7 +167,7 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
                 );
               })}
             </div>
-            <div className="flex items-center justify-between border-t border-line pt-6">
+            <div className="flex items-center justify-between border-t border-slate-200 pt-6">
               <span className="text-xs text-ink-muted">{symptoms.length === 0 ? 'Select at least one symptom' : 'Ready for parameters'}</span>
               <Button size="lg" disabled={!symptoms.length} onClick={() => setStep(2)}>Continue <ChevronRight className="h-4 w-4" /></Button>
             </div>
@@ -177,17 +177,17 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
 
       {/* Step 2 */}
       {step === 2 && (
-        <div className="mx-auto max-w-3xl animate-fadeUp space-y-8 rounded-2xl border border-line bg-raised/40 p-8 sm:p-10">
-          <div className="border-b border-line pb-4">
+        <div className="mx-auto max-w-3xl animate-fadeUp space-y-8 rounded-2xl border border-slate-200 bg-raised/40 p-8 sm:p-10">
+          <div className="border-b border-slate-200 pb-4">
             <h3 className="text-xl font-semibold text-ink">Clinical Severity & Biometrics</h3>
             <p className="text-xs text-ink-muted">Helps build a precise diagnostic roadmap</p>
           </div>
 
-          <div className="space-y-4 rounded-xl border border-line bg-white/[0.02] p-6">
+          <div className="space-y-4 rounded-xl border border-slate-200 bg-slate-50 p-6">
             <div className="flex items-center justify-between">
               <label className="flex items-center gap-2 text-sm font-semibold text-ink"><HeartPulse className="h-4 w-4 text-rose-400" /> Pain severity (1–10)</label>
               <span className={cn('rounded-lg border px-3 py-1 font-mono text-xs font-bold',
-                pain >= 8 ? 'border-rose-500/30 bg-rose-500/10 text-rose-300' : pain >= 5 ? 'border-amber-500/30 bg-amber-500/10 text-amber-300' : 'border-emerald-500/30 bg-emerald-500/10 text-emerald-300')}>
+                pain >= 8 ? 'border-rose-200 bg-rose-50 text-rose-700' : pain >= 5 ? 'border-amber-200 bg-amber-50 text-amber-700' : 'border-emerald-200 bg-emerald-50 text-emerald-700')}>
                 {pain}/10 · {pain >= 8 ? 'Severe' : pain >= 5 ? 'Moderate' : 'Mild'}
               </span>
             </div>
@@ -201,26 +201,26 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
               {['Less than 24h', '24-48 Hours', '1-2 Weeks', 'Over a month'].map((d) => (
                 <button key={d} onClick={() => setDuration(d)}
                   className={cn('rounded-xl border py-3 text-xs font-semibold transition-all',
-                    duration === d ? 'border-brand-400/50 bg-brand-500/15 text-brand-200' : 'border-line bg-white/[0.02] text-ink-soft hover:bg-white/[0.05]')}>
+                    duration === d ? 'border-brand-400/50 bg-brand-500/15 text-brand-700' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50')}>
                   {d}
                 </button>
               ))}
             </div>
           </div>
 
-          <div className="flex items-center justify-between rounded-xl border border-line bg-white/[0.02] p-4">
+          <div className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-4">
             <div>
               <p className="text-sm font-semibold text-ink">Pregnancy indicator</p>
               <p className="text-xs text-ink-muted">Changes medication safety boundaries</p>
             </div>
             <button onClick={() => setPregnant((v) => !v)}
               className={cn('rounded-xl border px-4 py-2 text-xs font-semibold transition-all',
-                pregnant ? 'border-rose-500/40 bg-rose-500/15 text-rose-300' : 'border-line bg-white/[0.02] text-ink-soft hover:bg-white/[0.05]')}>
+                pregnant ? 'border-rose-300 bg-rose-50 text-rose-700 shadow-sm' : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50')}>
               {pregnant ? 'Yes (active)' : 'No / N/A'}
             </button>
           </div>
 
-          <div className="flex items-center justify-between border-t border-line pt-4">
+          <div className="flex items-center justify-between border-t border-slate-200 pt-4">
             <Button variant="secondary" onClick={() => setStep(1)}>Back</Button>
             <Button size="lg" onClick={generateRoadmap} disabled={analyzing}>
               {analyzing ? 'Analyzing via RAG...' : 'Generate Roadmap'} <Sparkles className="h-4 w-4" />
@@ -234,8 +234,8 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
         <div className="mx-auto max-w-4xl animate-fadeUp space-y-8">
           {/* Triage Header */}
           <div className={cn('space-y-6 rounded-2xl border p-8 sm:p-10', sevBorder, sevBg)}>
-            <div className="flex items-center justify-between border-b border-line pb-4">
-              <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-300">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+              <span className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-700">
                 <ListChecks className="h-4 w-4" /> RAG-Enhanced Triage Synthesis
               </span>
               <span className={cn('rounded-full border px-3 py-1 text-xs font-bold uppercase', sevBadge)}>
@@ -255,8 +255,8 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
 
             {/* Possible Conditions with Confidence */}
             {conditions.length > 0 && (
-              <div className="space-y-4 rounded-xl border border-line bg-base/40 p-6">
-                <h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-300">
+              <div className="space-y-4 rounded-xl border border-slate-200 bg-base/40 p-6">
+                <h4 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-brand-700">
                   <Activity className="h-4 w-4" /> Possible Conditions (Not Definitive)
                 </h4>
                 <p className="text-xs text-ink-muted">These are AI-assisted preliminary assessments with confidence scores. Always consult a physician for definitive diagnosis.</p>
@@ -264,12 +264,12 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
                   {conditions.map((c: any, i: number) => {
                     const pct = Math.round(c.confidence * 100);
                     const barColor = pct >= 70 ? 'bg-brand-400' : pct >= 40 ? 'bg-amber-400' : 'bg-ink-muted';
-                    const cSevColor = c.severity === 'urgent' ? 'text-rose-300' : c.severity === 'high' ? 'text-amber-300' : 'text-emerald-300';
+                    const cSevColor = c.severity === 'urgent' ? 'text-rose-700' : c.severity === 'high' ? 'text-amber-700' : 'text-emerald-700';
                     return (
-                      <div key={i} className="rounded-xl border border-line bg-white/[0.02] p-4">
+                      <div key={i} className="rounded-xl border border-slate-200 bg-slate-50 p-4">
                         <div className="flex items-center justify-between mb-2">
                           <div className="flex items-center gap-2">
-                            <span className="grid h-6 w-6 place-items-center rounded-full border border-brand-400/30 bg-brand-500/10 text-xs font-bold text-brand-300">{i + 1}</span>
+                            <span className="grid h-6 w-6 place-items-center rounded-full border border-brand-200 bg-brand-50 text-xs font-bold text-brand-700">{i + 1}</span>
                             <h5 className="text-sm font-semibold text-ink">{c.name}</h5>
                           </div>
                           <span className={cn('text-xs font-semibold', cSevColor)}>{c.severity}</span>
@@ -279,13 +279,13 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
                             <span className="text-xs text-ink-muted">Confidence</span>
                             <span className="text-xs font-bold text-ink">{pct}%</span>
                           </div>
-                          <div className="h-2.5 w-full rounded-full bg-white/5 overflow-hidden">
+                          <div className="h-2.5 w-full rounded-full bg-slate-200 overflow-hidden">
                             <div className={cn('h-full rounded-full transition-all duration-700', barColor)} style={{ width: `${pct}%` }} />
                           </div>
                         </div>
                         {c.description && <p className="text-xs text-ink-soft leading-relaxed">{c.description}</p>}
                         {c.precautions && (
-                          <div className="mt-2 rounded-lg border border-amber-500/20 bg-amber-500/10 p-2 text-[11px] text-amber-200">
+                          <div className="mt-2 rounded-lg border border-amber-200 bg-amber-50 p-2 text-[11px] text-amber-700">
                             <AlertTriangle className="h-3 w-3 inline mr-1" /> {c.precautions}
                           </div>
                         )}
@@ -298,11 +298,11 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
 
             {/* Recommended Specialties */}
             {specialties.length > 0 && (
-              <div className="rounded-xl border border-line bg-base/40 p-6">
-                <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-accent-400">Recommended Specialists</h4>
+              <div className="rounded-xl border border-slate-200 bg-base/40 p-6">
+                <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-blue-700">Recommended Specialists</h4>
                 <div className="flex flex-wrap gap-2">
                   {specialties.map((spec: string, i: number) => (
-                    <span key={i} className="rounded-xl border border-accent-500/25 bg-accent-500/10 px-3 py-1.5 text-xs font-semibold text-accent-400">
+                    <span key={i} className="rounded-xl border border-accent-500/25 bg-accent-500/10 px-3 py-1.5 text-xs font-semibold text-blue-700">
                       {spec}
                     </span>
                   ))}
@@ -311,8 +311,8 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
             )}
 
             {/* Self-Care Plan */}
-            <div className="space-y-3 rounded-xl border border-line bg-base/40 p-6">
-              <h4 className="text-xs font-semibold uppercase tracking-wider text-brand-300">Self-Care Action Roadmap</h4>
+            <div className="space-y-3 rounded-xl border border-slate-200 bg-base/40 p-6">
+              <h4 className="text-xs font-semibold uppercase tracking-wider text-brand-700">Self-Care Action Roadmap</h4>
               <ul className="space-y-2">
                 {plan.map((p: string, i: number) => (
                   <li key={i} className="flex items-start gap-2.5 text-sm text-ink-soft">
@@ -324,18 +324,18 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
 
             {/* RAG Knowledge Sources */}
             {knowledgeSources.length > 0 && (
-              <div className="rounded-xl border border-line bg-base/40 p-6">
-                <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-300">
+              <div className="rounded-xl border border-slate-200 bg-base/40 p-6">
+                <h4 className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-700">
                   <BookOpen className="h-4 w-4" /> RAG Knowledge Sources
                 </h4>
                 <div className="space-y-2">
                   {knowledgeSources.map((src: any, i: number) => (
-                    <div key={i} className="flex items-center justify-between rounded-lg border border-line bg-white/[0.02] p-3">
+                    <div key={i} className="flex items-center justify-between rounded-lg border border-slate-200 bg-slate-50 p-3">
                       <div className="min-w-0 flex-1">
                         <p className="text-xs font-semibold text-ink">{src.disease}</p>
                         <p className="text-[11px] text-ink-muted truncate">{src.description}</p>
                       </div>
-                      <span className="text-xs font-semibold text-brand-300">{Math.round(src.confidence * 100)}%</span>
+                      <span className="text-xs font-semibold text-brand-700">{Math.round(src.confidence * 100)}%</span>
                     </div>
                   ))}
                 </div>
@@ -355,19 +355,19 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
           </div>
 
           {/* Doctors */}
-          <div className="space-y-6 rounded-2xl border border-line bg-raised/40 p-8">
-            <div className="flex items-center justify-between border-b border-line pb-4">
+          <div className="space-y-6 rounded-2xl border border-slate-200 bg-raised/40 p-8">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <h4 className="text-lg font-semibold text-ink">Priority Specialists</h4>
-              <span className="rounded-full border border-accent-500/25 bg-accent-500/10 px-3 py-1 text-xs font-semibold text-accent-400">Verified network</span>
+              <span className="rounded-full border border-blue-200 bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-700">Verified network</span>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {docs.map((doc) => (
-                <div key={doc.id} className="flex items-center justify-between rounded-xl border border-line bg-white/[0.02] p-4 transition-colors hover:border-accent-500/40">
+                <div key={doc.id} className="flex items-center justify-between rounded-xl border border-slate-200 bg-slate-50 p-4 transition-colors hover:border-blue-300">
                   <div className="flex items-center gap-3">
                     <img src={doc.image} alt={doc.name} className="h-14 w-14 rounded-xl object-cover" />
                     <div>
                       <h5 className="text-sm font-semibold text-ink">{doc.name}</h5>
-                      <p className="text-xs font-medium text-accent-400">{doc.specialty}</p>
+                      <p className="text-xs font-medium text-blue-700">{doc.specialty}</p>
                       <p className="mt-0.5 text-[10px] text-ink-muted">⭐ {doc.rating} · {doc.availableNext}</p>
                     </div>
                   </div>
@@ -378,27 +378,27 @@ export const SymptomCheckerTab: React.FC<Props> = ({ onSelectDoctor, onSelectMed
           </div>
 
           {/* Medicines */}
-          <div className="space-y-6 rounded-2xl border border-line bg-raised/40 p-8">
-            <div className="flex items-center justify-between border-b border-line pb-4">
+          <div className="space-y-6 rounded-2xl border border-slate-200 bg-raised/40 p-8">
+            <div className="flex items-center justify-between border-b border-slate-200 pb-4">
               <h4 className="text-lg font-semibold text-ink">Suggested Medicines</h4>
-              <span className="rounded-full border border-emerald-500/25 bg-emerald-500/10 px-3 py-1 text-xs font-semibold text-emerald-300">Formulation safe</span>
+              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-xs font-semibold text-emerald-700">Formulation safe</span>
             </div>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {meds.map((med) => (
-                <div key={med.id} className="flex flex-col gap-3 rounded-xl border border-line bg-white/[0.02] p-4">
+                <div key={med.id} className="flex flex-col gap-3 rounded-xl border border-slate-200 bg-slate-50 p-4">
                   <div className="flex items-start justify-between">
                     <div>
                       <h5 className="text-sm font-semibold text-ink">{med.name}</h5>
-                      <p className="text-xs text-ink-muted">{med.genericName} · <span className="text-brand-300">{med.type}</span></p>
+                      <p className="text-xs text-ink-muted">{med.genericName} · <span className="text-brand-700">{med.type}</span></p>
                     </div>
                     <span className="text-xs font-semibold text-ink">{med.price}</span>
                   </div>
-                  <p className="rounded-lg border border-line bg-base/40 p-2.5 text-xs leading-relaxed text-ink-soft">
+                  <p className="rounded-lg border border-slate-200 bg-base/40 p-2.5 text-xs leading-relaxed text-ink-soft">
                     <span className="font-semibold text-ink">Dosage:</span> {med.recommendedDosage}
                   </p>
                   {onSelectMedicine && (
                     <button onClick={() => onSelectMedicine(med)}
-                      className="w-full rounded-lg border border-emerald-500/25 bg-emerald-500/10 py-2 text-xs font-semibold text-emerald-300 transition-colors hover:bg-emerald-500/20">
+                      className="w-full rounded-lg border border-emerald-200 bg-emerald-50 py-2 text-xs font-semibold text-emerald-700 transition-colors hover:bg-emerald-100">
                       Review interactions
                     </button>
                   )}
